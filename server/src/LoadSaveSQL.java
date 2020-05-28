@@ -1,22 +1,34 @@
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
 public class LoadSaveSQL {
 
     public static void loading() throws ClassNotFoundException, SQLException {
-        String user = "s250752";
-        String password = "wpi318";
-        String connection = "jdbc:postgresql://pg:5432/studs";
-        /*
-        String user = "postgres";
-        String password = "U1KICW2URNI";
-        String connection = "jdbc:postgresql://localhost:5432/studs";
-         */
-        Class.forName("org.postgresql.Driver");
+        FileInputStream fis;
+        Properties property = new Properties();
+        String user = " ";
+        String password = " ";
+        String connection = " ";
+        String driver = " ";
+        try{
+            fis = new FileInputStream("config.properties");
+            property.load(fis);
+            user = property.getProperty("db.login");
+            password = property.getProperty("db.password");
+            connection = property.getProperty("db.host");
+            driver = property.getProperty("db.driver");
+        } catch (IOException e){
+            System.out.println("Нет файла. Выход");
+            System.exit(0);
+        }
+        Class.forName(driver);
         try(Connection connection1 = DriverManager.getConnection(connection,user,password);
             Statement statement = connection1.createStatement(); Statement statement2 = connection1.createStatement();) {
             ResultSet resultFlats = statement.executeQuery("SELECT * from flats");
@@ -77,15 +89,24 @@ public class LoadSaveSQL {
     }
 
     public static void saving() throws ClassNotFoundException, SQLException {
-        String user = "s250752";
-        String password = "wpi318";
-        String connection = "jdbc:postgresql://pg:5432/studs";
-        /*
-        String user = "postgres";
-        String password = "U1KICW2URNI";
-        String connection = "jdbc:postgresql://localhost:5432/studs";
-         */
-        Class.forName("org.postgresql.Driver");
+        FileInputStream fis;
+        Properties property = new Properties();
+        String user = " ";
+        String password = " ";
+        String connection = " ";
+        String driver = " ";
+        try{
+            fis = new FileInputStream("config.properties");
+            property.load(fis);
+            user = property.getProperty("db.login");
+            password = property.getProperty("db.password");
+            connection = property.getProperty("db.host");
+            driver = property.getProperty("db.driver");
+        } catch (IOException e){
+            System.out.println("Нет файла. Выход");
+            System.exit(0);
+        }
+        Class.forName(driver);
         try(Connection connection1 = DriverManager.getConnection(connection,user,password);
             Statement statement = connection1.createStatement(); Statement statement2 = connection1.createStatement();){
             statement.execute("delete from relation");

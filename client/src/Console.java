@@ -45,7 +45,7 @@ public class Console {
             break;
         }
         while (true){
-            System.out.println("Введите логин (без пробелов)");
+            System.out.println("Введите логин (желательно, без пробелов)");
             LoginSendCommandUnex loginSendCommandUnex = new LoginSendCommandUnex();
             if(loginSendCommandUnex.checkCom(sc.nextLine().split(" "))){
                 loginSendCommandUnex.newOrNot=newOrNot;
@@ -57,7 +57,7 @@ public class Console {
             }
         }
         while (true){
-            System.out.println("Введите пароль (без пробелов)");
+            System.out.println("Введите пароль (желательно, без пробелов)");
             PasswordSendUnex passwordSendUnex = new PasswordSendUnex();
             if(passwordSendUnex.checkCom(sc.nextLine().split(" "))){
                 passwordSendUnex.newOrNot=newOrNot;

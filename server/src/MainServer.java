@@ -1,10 +1,12 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -23,14 +25,19 @@ public class MainServer {
     public static DatagramChannel server;
     static int port;
 
-    public static <T> void main(String[] args) {
-        try(FileInputStream ins = new FileInputStream("log.config")){
+    public static void main(String[] args) throws IOException {
+        try(FileInputStream ins = new FileInputStream("log.config")) {
             LogManager.getLogManager().readConfiguration(ins);
             LOGGER = Logger.getLogger(MainServer.class.getName());
-        }catch (Exception ignore){
-            ignore.printStackTrace();
+            LOGGER.log(Level.INFO, "Начало работы сервера");
+        }catch (FileNotFoundException e){
+            System.out.println("Файл конфига не найден. Выход");
+            System.exit(0);
+        } catch (AccessDeniedException e){
+            System.out.println("Проверьте свои права ^v^. Выходим в окно");
+            System.exit(0);
         }
-        LOGGER.log(Level.INFO,"Начало работы сервера.");
+
         commandList.put("help ", " вывести справку по доступным командам");//
         commandList.put("info ", " вывести в стандартный поток вывода информацию о коллекции");//
         commandList.put("show ", " вывести в стандартный поток вывода все элементы коллекции в строковом представлении");//
